@@ -205,4 +205,233 @@ npm test
 
 ---
 
-**Built with ❤️ by Anmol Bisht**
+---
+
+## 📚 API Reference
+
+Here is a detailed guide to the available API endpoints.
+
+> **Base URL**: `/api/v1`
+
+<details>
+<summary><b>🔐 Authentication (Auth)</b></summary>
+
+### Login
+**POST** `/auth/login`
+
+**Body:**
+```json
+{
+  "email": "admin@school.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1Ni...",
+    "user": { ... }
+  }
+}
+```
+
+### Refresh Token
+**POST** `/auth/refresh-token`
+*Requires `refreshToken` cookie.*
+
+</details>
+
+
+<details>
+<summary><b>👨‍💼 Super Admin Module</b></summary>
+
+### Create New School
+**POST** `/super-admin/schools`
+
+**Body:**
+```json
+{
+  "school": {
+    "name": "Delhi Public School",
+    "address": "Generic Street, Delhi",
+    "contactEmail": "info@dps.com",
+    "contactPhone": "9999999999"
+  },
+  "admin": {
+    "firstName": "Principal",
+    "lastName": "Sharma",
+    "email": "admin@dps.com",
+    "password": "securePass123"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "school": { "_id": "65b...", "name": "Delhi Public School" },
+    "admin": { "_id": "65b...", "role": "school_admin" }
+  }
+}
+```
+
+</details>
+
+
+<details>
+<summary><b>🏫 School Management</b></summary>
+
+### Create Academic Year
+**POST** `/academic-years`
+
+**Body:**
+```json
+{
+  "name": "2024-2025",
+  "startDate": "2024-04-01",
+  "endDate": "2025-03-31",
+  "isCurrent": true
+}
+```
+
+### Create Class
+**POST** `/classes`
+
+**Body:**
+```json
+{
+  "name": "Class 10",
+  "displayOrder": 10,
+  "academicYearId": "65b..."
+}
+```
+
+### Create Section
+**POST** `/classes/sections`
+
+**Body:**
+```json
+{
+  "name": "Section A",
+  "classId": "65b...",
+  "academicYearId": "65b..."
+}
+```
+
+</details>
+
+
+<details>
+<summary><b>🎓 Student Management</b></summary>
+
+### Admit Student
+**POST** `/students`
+
+**Body:**
+```json
+{
+  "firstName": "Rahul",
+  "lastName": "Verma",
+  "admissionNumber": "ADM-2024-001",
+  "classId": "65b...",
+  "sectionId": "65b...",
+  "academicYearId": "65b...",
+  "parentName": "Mr. Verma",
+  "parentPhone": "9876543210",
+  "gender": "male"
+}
+```
+
+### Bulk Import
+**POST** `/students/bulk-import`
+
+**Body:**
+```json
+{
+  "students": [
+    { "firstName": "Alice", "admissionNumber": "A001", ... },
+    { "firstName": "Bob", "admissionNumber": "A002", ... }
+  ]
+}
+```
+
+</details>
+
+
+<details>
+<summary><b>💰 Fee & Invoices</b></summary>
+
+### Create Fee Structure
+**POST** `/fees/structures`
+
+**Body:**
+```json
+{
+  "name": "Class 10 - Annual Fee",
+  "academicYearId": "65b...",
+  "classId": "65b...",
+  "frequency": "quarterly",
+  "amount": 40000,
+  "feeComponents": [
+    { "feeHeadId": "65b...", "amount": 30000 }, // Tuition
+    { "feeHeadId": "65b...", "amount": 10000 }  // Lab
+  ],
+  "installments": [
+    { "name": "Q1", "dueDate": "2024-04-10", "amount": 10000 },
+    { "name": "Q2", "dueDate": "2024-07-10", "amount": 10000 },
+    { "name": "Q3", "dueDate": "2024-10-10", "amount": 10000 },
+    { "name": "Q4", "dueDate": "2025-01-10", "amount": 10000 }
+  ]
+}
+```
+
+### Bulk Generate Invoices
+**POST** `/invoices/generate-bulk`
+
+**Body:**
+```json
+{
+  "classId": "65b...",
+  "feeStructureId": "65b...",
+  "academicYearId": "65b...",
+  "installmentName": "Q1"
+}
+```
+
+</details>
+
+
+<details>
+<summary><b>💳 Payments</b></summary>
+
+### Initiate Payment
+**POST** `/payments/initiate`
+
+**Body:**
+```json
+{
+  "invoiceId": "65b...",
+  "amount": 10000,
+  "paymentMethod": "online"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "order": { "id": "order_N2...", "amount": 1000000, "currency": "INR" },
+    "keyId": "rzp_test..."
+  }
+}
+```
+
+</details>
+

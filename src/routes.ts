@@ -21,8 +21,13 @@ import feeRoutes from './modules/fees/fee.routes';
 import invoiceRoutes from './modules/invoices/invoice.routes';
 import paymentRoutes from './modules/payments/payment.routes';
 
+import reportRoutes from './modules/reports/report.routes';
+import notificationRoutes from './modules/notifications/notification.routes';
+
 router.use('/fees', feeRoutes);
 router.use('/invoices', invoiceRoutes);
 router.use('/payments', paymentRoutes);
+router.use('/reports', reportRoutes);
+router.use('/notifications', notificationRoutes);
 
 export default router;

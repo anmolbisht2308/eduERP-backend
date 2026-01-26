@@ -23,15 +23,14 @@ const userSchema = new Schema<IUserDocument>(
 );
 
 // Hash password before saving
-userSchema.pre('save' as any, async function (next: (err?: mongoose.CallbackError) => void) {
+userSchema.pre('save', async function () {
     if (!this.isModified('password')) {
-        return next();
+        return;
     }
     const salt = await bcrypt.genSalt(10);
     if (this.password) {
         this.password = await bcrypt.hash(this.password, salt);
     }
-    next();
 });
 
 // Compare password method

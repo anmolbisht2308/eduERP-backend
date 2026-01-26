@@ -19,8 +19,10 @@ router.use('/academic-years', academicRoutes);
 router.use('/classes', classRoutes);
 import feeRoutes from './modules/fees/fee.routes';
 import invoiceRoutes from './modules/invoices/invoice.routes';
+import paymentRoutes from './modules/payments/payment.routes';
 
 router.use('/fees', feeRoutes);
 router.use('/invoices', invoiceRoutes);
+router.use('/payments', paymentRoutes);
 
 export default router;

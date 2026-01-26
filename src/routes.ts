@@ -17,6 +17,10 @@ router.use('/super-admin', superAdminRoutes);
 router.use('/schools', schoolRoutes);
 router.use('/academic-years', academicRoutes);
 router.use('/classes', classRoutes);
-router.use('/students', studentRoutes);
+import feeRoutes from './modules/fees/fee.routes';
+import invoiceRoutes from './modules/invoices/invoice.routes';
+
+router.use('/fees', feeRoutes);
+router.use('/invoices', invoiceRoutes);
 
 export default router;

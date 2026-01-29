@@ -104,12 +104,15 @@ export const createAcademicYearSchema = Joi.object({
     startDate: Joi.date().required(),
     endDate: Joi.date().required(),
     isCurrent: Joi.boolean(),
+    isActive: Joi.boolean(),
+    schoolId: Joi.string().allow('', null), // Allow but ignore
 });
 
 // Class validation
 export const createClassSchema = Joi.object({
     name: Joi.string().required(),
     displayOrder: Joi.number().integer(),
+    sectionName: Joi.string().allow('', null), // Allow optional section creation
 });
 
 // Helper function to validate request

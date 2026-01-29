@@ -20,8 +20,11 @@ export const protect = catchAsync(async (req: Request, res: Response, next: Next
     // 1) Getting token and check of it's there
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
+        if (token === 'undefined' || token === 'null') token = undefined;
+        console.log('Auth Middleware - Bearer Token:', token);
     } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
+        console.log('Auth Middleware - Cookie Token:', token);
     }
 
     if (!token) {

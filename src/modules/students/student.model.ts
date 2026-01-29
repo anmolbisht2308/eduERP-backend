@@ -49,7 +49,7 @@ const studentSchema = new Schema<IStudent>(
         sectionId: { type: Schema.Types.ObjectId, ref: 'Section' },
 
         // Student Info
-        admissionNumber: { type: String, required: true, unique: true },
+        admissionNumber: { type: String, required: true }, // Removed global unique: true
         rollNumber: { type: String },
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
@@ -75,7 +75,8 @@ const studentSchema = new Schema<IStudent>(
 );
 
 studentSchema.index({ schoolId: 1, academicYearId: 1, classId: 1 });
-studentSchema.index({ admissionNumber: 1 });
+// Compound index to ensure uniqueness per school
+studentSchema.index({ schoolId: 1, admissionNumber: 1 }, { unique: true });
 studentSchema.index({ parentPhone: 1 });
 
 export const Student = mongoose.model<IStudent>('Student', studentSchema);

@@ -1,16 +1,19 @@
 import express from 'express';
 import * as schoolController from './school.controller';
-import { protect } from '../../middlewares/auth.middleware';
-import { restrictTo } from '../../middlewares/role.middleware';
+import { protect, restrictTo } from '../../middlewares/auth.middleware';
 import { UserRole } from '../users/user.types';
 
 const router = express.Router();
 
-router.use(protect);
-// Determine who can access: School Admin mostly. Staff might view.
-router.use(restrictTo(UserRole.SCHOOL_ADMIN, UserRole.SUPER_ADMIN));
+router.use(protect); // All routes require login
 
-router.get('/me', schoolController.getMySchool);
-router.patch('/me', schoolController.updateMySchool);
+// Super Admin only: Create and List all schools
+router
+    .route('/')
+    .get(restrictTo(UserRole.SUPER_ADMIN), schoolController.getAllSchools)
+    .post(restrictTo(UserRole.SUPER_ADMIN), schoolController.createSchool);
+
+// School Admin: Get own school details
+router.get('/me', restrictTo(UserRole.SCHOOL_ADMIN), schoolController.getMySchool);
 
 export default router;

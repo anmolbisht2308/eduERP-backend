@@ -1,33 +1,10 @@
 import express from 'express';
 import authRoutes from './modules/auth/auth.routes';
-
-import superAdminRoutes from './modules/super-admin/super-admin.routes';
-
 import schoolRoutes from './modules/schools/school.routes';
-import academicRoutes from './modules/academic/academic.routes';
-import classRoutes from './modules/classes/class.routes';
-import studentRoutes from './modules/students/student.routes';
 
 const router = express.Router();
 
 router.use('/auth', authRoutes);
-router.use('/super-admin', superAdminRoutes);
-
-// School Management
 router.use('/schools', schoolRoutes);
-router.use('/academic-years', academicRoutes);
-router.use('/classes', classRoutes);
-import feeRoutes from './modules/fees/fee.routes';
-import invoiceRoutes from './modules/invoices/invoice.routes';
-import paymentRoutes from './modules/payments/payment.routes';
-
-import reportRoutes from './modules/reports/report.routes';
-import notificationRoutes from './modules/notifications/notification.routes';
-
-router.use('/fees', feeRoutes);
-router.use('/invoices', invoiceRoutes);
-router.use('/payments', paymentRoutes);
-router.use('/reports', reportRoutes);
-router.use('/notifications', notificationRoutes);
 
 export default router;

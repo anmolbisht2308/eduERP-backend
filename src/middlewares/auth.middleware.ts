@@ -4,6 +4,7 @@ import { env } from '../config/env';
 import { AppError } from '../utils/AppError';
 import { catchAsync } from '../utils/catchAsync';
 import { User, IUserDocument } from '../modules/users/user.model';
+import { UserRole } from '../modules/users/user.types';
 
 // Extend Express Request interface to include user
 declare global {
@@ -36,10 +37,18 @@ export const protect = catchAsync(async (req: Request, res: Response, next: Next
         return next(new AppError('The user belonging to this token no longer does exist.', 401));
     }
 
-    // 4) Check if user changed password after the token was issued
-    // (Optional implementation if schema supports passwordChangedAt)
-
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
     next();
 });
+
+export const restrictTo = (...roles: UserRole[]) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+        // roles ['admin', 'lead-guide']. role='user'
+        if (!req.user || !roles.includes(req.user.role as UserRole)) {
+            return next(new AppError('You do not have permission to perform this action', 403));
+        }
+
+        next();
+    };
+};

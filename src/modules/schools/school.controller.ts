@@ -1,21 +1,51 @@
 import { Request, Response, NextFunction } from 'express';
-import { catchAsync } from '../../utils/catchAsync';
-import { sendSuccess } from '../../utils/response';
 import * as schoolService from './school.service';
-import { AppError } from '../../utils/AppError';
+import { catchAsync } from '../../utils/catchAsync';
+import { UserRole } from '../users/user.types';
 
-export const getMySchool = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user || !req.user.schoolId) {
-        return next(new AppError('User does not belong to a school', 400));
-    }
-    const result = await schoolService.getSchoolById(req.user.schoolId.toString());
-    sendSuccess(res, result);
+export const createSchool = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { name, address, contactEmail, contactPhone, adminName, adminEmail, adminPassword } = req.body;
+
+    const result = await schoolService.createSchool({
+        name,
+        address,
+        contactEmail,
+        contactPhone,
+        adminName,
+        adminEmail, // School Admin Login
+        adminPassword,
+    });
+
+    res.status(201).json({
+        status: 'success',
+        data: result,
+    });
 });
 
-export const updateMySchool = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const getAllSchools = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const schools = await schoolService.getAllSchools();
+
+    res.status(200).json({
+        status: 'success',
+        results: schools.length,
+        data: {
+            schools,
+        },
+    });
+});
+
+export const getMySchool = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    // For school admins to get their own school details
     if (!req.user || !req.user.schoolId) {
-        return next(new AppError('User does not belong to a school', 400));
+        return res.status(400).json({ status: 'fail', message: 'User not associated with a school' });
     }
-    const result = await schoolService.updateSchool(req.user.schoolId.toString(), req.body);
-    sendSuccess(res, result, 'School settings updated successfully');
+
+    const school = await schoolService.getSchoolById(req.user.schoolId.toString());
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            school,
+        },
+    });
 });

@@ -113,6 +113,7 @@ export const createClassSchema = Joi.object({
     name: Joi.string().required(),
     displayOrder: Joi.number().integer(),
     sectionName: Joi.string().allow('', null), // Allow optional section creation
+    schoolId: Joi.string().allow('', null), // Allow but ignore
 });
 
 // Helper function to validate request

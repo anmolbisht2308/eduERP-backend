@@ -27,14 +27,13 @@ const academicYearSchema = new Schema<IAcademicYear>(
 academicYearSchema.index({ schoolId: 1, isCurrent: 1 });
 
 // Ensure only one academic year is current per school
-academicYearSchema.pre('save' as any, async function (next: (err?: mongoose.CallbackError) => void) {
+academicYearSchema.pre('save' as any, async function () {
     if (this.isCurrent) {
         await mongoose.model('AcademicYear').updateMany(
             { schoolId: this.schoolId, _id: { $ne: this._id } },
             { isCurrent: false }
         );
     }
-    next();
 });
 
 export const AcademicYear = mongoose.model<IAcademicYear>('AcademicYear', academicYearSchema);

@@ -14,6 +14,7 @@ router.use(restrictTo(UserRole.SCHOOL_ADMIN, UserRole.SUPER_ADMIN));
 
 router.post('/', validate(createAcademicYearSchema), academicController.createAcademicYear);
 router.get('/', academicController.getAcademicYears);
+router.patch('/:id/set-current', academicController.setCurrentAcademicYear);
 router.get('/:id', academicController.getAcademicYear);
 router.patch('/:id', academicController.updateAcademicYear);
 router.delete('/:id', academicController.deleteAcademicYear);

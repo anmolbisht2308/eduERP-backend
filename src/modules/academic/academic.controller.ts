@@ -38,3 +38,10 @@ export const deleteAcademicYear = catchAsync(async (req: Request, res: Response,
     const result = await academicService.deleteAcademicYear(req.params.id as string, req.user.schoolId.toString());
     sendSuccess(res, null, 'Academic year deleted successfully');
 });
+
+export const setCurrentAcademicYear = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user?.schoolId) return next(new AppError('School ID missing', 400));
+
+    const result = await academicService.setCurrentAcademicYear(req.params.id as string, req.user.schoolId.toString());
+    sendSuccess(res, result, 'Current academic year updated successfully');
+});

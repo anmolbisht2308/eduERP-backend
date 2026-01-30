@@ -34,3 +34,12 @@ export const deleteAcademicYear = async (id: string, schoolId: string) => {
     if (!year) throw new AppError('Academic year not found', 404);
     return year;
 };
+
+export const setCurrentAcademicYear = async (id: string, schoolId: string) => {
+    const year = await AcademicYear.findOne({ _id: id, schoolId });
+    if (!year) throw new AppError('Academic year not found', 404);
+
+    year.isCurrent = true;
+    await year.save(); // Triggers pre-save hook to set other years to false
+    return year;
+};

@@ -26,12 +26,12 @@ const createSendToken = (user: any, statusCode: number, res: Response, message: 
 
     // Cookie options
     const cookieOptions = {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day default
+        expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
     };
 
-    res.cookie('jwt', token, cookieOptions);
+    res.cookie('token', token, cookieOptions);
     res.cookie('refreshToken', refreshToken, {
         ...cookieOptions,
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
@@ -50,7 +50,7 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
 });
 
 export const logout = (req: Request, res: Response) => {
-    res.cookie('jwt', 'loggedout', {
+    res.cookie('token', 'loggedout', {
         expires: new Date(Date.now() + 10 * 1000),
         httpOnly: true,
     });

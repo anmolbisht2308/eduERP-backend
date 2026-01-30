@@ -21,8 +21,8 @@ export const protect = catchAsync(async (req: Request, res: Response, next: Next
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
         if (token === 'undefined' || token === 'null') token = undefined;
-    } else if (req.cookies.jwt) {
-        token = req.cookies.jwt;
+    } else if (req.cookies.token) {
+        token = req.cookies.token;
     }
 
     if (!token) {

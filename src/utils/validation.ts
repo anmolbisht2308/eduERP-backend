@@ -13,7 +13,8 @@ export const paginationSchema = Joi.object({
 // Student validation
 export const createStudentSchema = Joi.object({
     classId: objectIdSchema.required(),
-    sectionId: objectIdSchema,
+    sectionId: Joi.string().allow('', null), // Allow empty if no section assigned
+    schoolId: Joi.string().allow('', null), // Allow but ignore
     admissionNumber: Joi.string().required(),
     rollNumber: Joi.string(),
     firstName: Joi.string().required(),

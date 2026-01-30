@@ -1,8 +1,27 @@
+import mongoose from 'mongoose';
 import { Student, StudentStatus } from './student.model';
 import { AppError } from '../../utils/AppError';
 
 export const createStudent = async (schoolId: string, data: any) => {
-    // Check if admission number exists in this school
+    // 1. Get Current Academic Year
+    const currentYear = await mongoose.model('AcademicYear').findOne({ schoolId, isCurrent: true });
+    if (!currentYear) {
+        throw new AppError('No active academic year found. Please set a current academic year first.', 400);
+    }
+
+    // 2. Prepare Data
+    const studentData = {
+        ...data,
+        schoolId,
+        academicYearId: currentYear._id
+    };
+
+    // 3. Sanitize sectionId (Mongoose throws CastError for empty string)
+    if (!studentData.sectionId) {
+        delete studentData.sectionId;
+    }
+
+    // 4. Check Duplicate Admission Number
     const existing = await Student.findOne({
         schoolId,
         admissionNumber: data.admissionNumber
@@ -12,7 +31,7 @@ export const createStudent = async (schoolId: string, data: any) => {
         throw new AppError('Admission number already exists', 400);
     }
 
-    return await Student.create({ ...data, schoolId });
+    return await Student.create(studentData);
 };
 
 export const getStudents = async (schoolId: string, query: any) => {

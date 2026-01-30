@@ -2,8 +2,23 @@ import { Class } from './class.model';
 import { Section } from './section.model';
 import { AppError } from '../../utils/AppError';
 
+import { AcademicYear } from '../academic/academic-year.model';
+
 // Class Services
 export const createClass = async (schoolId: string, data: any) => {
+    // Auto-assign current academic year if not provided
+    if (!data.academicYearId) {
+        // Try to find current year first, then fall back to any active year
+        let currentYear = await AcademicYear.findOne({ schoolId, isCurrent: true });
+        if (!currentYear) {
+            currentYear = await AcademicYear.findOne({ schoolId, isActive: true });
+        }
+        if (!currentYear) {
+            throw new AppError('No active academic year found. Please create one first.', 400);
+        }
+        data.academicYearId = currentYear._id;
+    }
+
     return await Class.create({ ...data, schoolId });
 };
 

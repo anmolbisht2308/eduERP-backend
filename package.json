@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "devDependencies": {
+  "dependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
@@ -22,11 +22,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
     "@types/nodemailer": "^7.0.5",
-    "nodemon": "^3.1.11",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -38,8 +33,11 @@
     "mongoose": "^9.1.5",
     "node-cron": "^4.2.1",
     "nodemailer": "^7.0.12",
+    "nodemon": "^3.1.11",
     "pdfkit": "^0.17.2",
     "razorpay": "^2.9.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
     "xlsx": "^0.18.5"
   }
 }

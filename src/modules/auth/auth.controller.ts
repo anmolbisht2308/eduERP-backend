@@ -29,6 +29,7 @@ const createSendToken = (user: any, statusCode: number, res: Response, message: 
         expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
+        sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax' as 'none' | 'lax' | 'strict',
     };
 
     res.cookie('token', token, cookieOptions);
